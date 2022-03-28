@@ -4,8 +4,8 @@
 # uses lesion cost function weighting
 # applies warp to T2 and FLAIR lesion masks and binarises
 
-FILE1=MPRAGE_brainf0.2-b.nii.gz
-FILE2=T2_bra.nii.gz
+FILE1=MPRAGE_brain.nii.gz
+FILE2=T2_brain.nii.gz
 FILE3=FLAIR_brain.nii.gz
 
   #make directory
