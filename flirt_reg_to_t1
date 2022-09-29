@@ -1,0 +1,49 @@
+#!/bin/zsh
+
+# registers image (t2, swi, fgatir or flair) to T1 of same session, flirt
+# edit path to project directory containing subjects
+
+# $1 = surgery date of subject
+# $2 = session - preop, postop1, postop2
+# $3 = name of brain extracted image to register
+# $4 = name of brain extracted T1 image
+
+#edit path
+
+pathtosub=/Volumes/brydrive/SGUL_RA/thalamotomy_study/thalamotomy
+
+#make directory
+
+mkdir ${pathtosub}/sub-${1}/derivatives/ses-${2}/anat/regtoT1
+
+#identifies image sequence for naming
+
+  if [[ "${3}" == *"FLAIR"* ]] || [[ "${3}" == *"flair"* ]] ; then
+  image=FLAIR
+  echo ${image}
+elif [[ "${3}" == *"T2"* ]] || [[ "${3}" == *"t2"* ]] ; then
+  image=T2
+  echo ${image}
+elif [[ "${3}" == *"FGATIR"* ]] || [[ "${3}" == *"fgatir"* ]] ; then
+  image=FGATIR
+  echo ${image}
+elif [[ "${3}" == *"SWI"* ]] || [[ "${3}" == *"swi"* ]] ; then
+  image=SWI
+  echo ${image}
+else echo ${3} unknown image
+fi
+
+#   registers input image to T1 and produces slices
+if test -f ${pathtosub}/sub-${1}/derivatives/ses-${2}/anat/$3 ; then
+
+  flirt -in ${pathtosub}/sub-${1}/derivatives/ses-${2}/anat/$3 -ref ${pathtosub}/sub-${1}/derivatives/ses-${2}/anat/$4 -out ${pathtosub}/sub-${1}/derivatives/ses-${2}/anat/regtoT1/sub-${1}_ses-${2}_${image}toT1.nii.gz -omat ${pathtosub}/sub-${1}/derivatives/ses-${2}/anat/regtoT1/sub-${1}_ses-${2}_${image}toT1.mat -dof 6
+
+  echo "$3 to T1 registration done"
+
+  slicer ${pathtosub}/sub-${1}/derivatives/ses-${2}/anat/$4 ${pathtosub}/sub-${1}/derivatives/ses-${2}/anat/regtoT1/sub-${1}_ses-${2}_${image}toT1.nii.gz -a ${pathtosub}/sub-${1}/derivatives/ses-${2}/anat/regtoT1/sub-${1}_ses-${2}_${image}toT1_reg_check.ppm
+
+else
+
+  echo no "$3"
+
+fi
