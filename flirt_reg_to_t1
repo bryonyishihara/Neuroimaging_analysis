@@ -3,7 +3,7 @@
 # registers image (t2, swi, fgatir or flair) to T1 of same session, flirt
 # edit path to project directory containing subjects
 
-# $1 = surgery date of subject
+# $1 = subject ID
 # $2 = session - preop, postop1, postop2
 # $3 = name of brain extracted image to register
 # $4 = name of brain extracted T1 image
